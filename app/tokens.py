@@ -8,7 +8,7 @@ TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
 def login():
     givenU = request.get_json()['username']
     givenPW = request.get_json()['password']
-    return makeToken(giveU, givenPW)  
+    return jsonify(makeToken(givenU, givenPW))  
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
