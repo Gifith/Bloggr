@@ -14,3 +14,4 @@ app.register_blueprint(TokensAPI)
 def hello():
     return "Hello World !"
 
+from db.modele import db
