@@ -1,3 +1,6 @@
 *.pyc
+<<<<<<< HEAD
 .vscode
+=======
+>>>>>>> ced90cb2f2a2040d997b5ca76089d793f7d7e328
 storage/*
