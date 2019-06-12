@@ -31,10 +31,9 @@ def login():
         if request.is_json :
             return jsonify({'token': tokenVal})
         else:
-            #resp = make_response('http://google.fr')
-            #resp.set_cookie('token', user)
-            #return resp
-            return redirect('http://google.fr')
+            resp = make_response('http://google.fr')
+            resp.set_cookie('token', user)
+            return resp
     else:
         db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
         db.session.commit()
