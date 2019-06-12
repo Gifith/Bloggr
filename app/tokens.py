@@ -17,6 +17,7 @@ def displayTokens():
 
 @TokensAPI.route("/", methods=["POST"])
 def login():
+    print('success')
     u = request.get_json()['username']
     pw = request.get_json()['password']
 
