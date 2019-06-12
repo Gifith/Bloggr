@@ -1,4 +1,0 @@
->Python -i
->>> from app import app, db
->>> db.create_all()
->>> exit()
