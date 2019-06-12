@@ -1,15 +1,13 @@
-from db.modele import db, Token
+from .modele import db, Token
+from datetime import datetime
 
-def TestTokenOld(lesTokens):
-    suppr = false
+def remove_old_tokens():
+    suppr = False    
 
-    for tok in lesTokens:
-        if datetime.datetime.now() > tok.expiration:
-            # db.session.delete(me)
-            print tok.jwt
-            suppr = true
+    for tok in Token.query.all():
+        if datetime.now() > tok.expiration:
+            db.session.delete(tok)
+            suppr = True
 
-    if suppr == true:
+    if suppr == True:
         db.session.commit() 
-
-
