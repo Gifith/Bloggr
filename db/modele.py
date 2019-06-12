@@ -49,3 +49,10 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag %r>' % self.titre
+
+
+class Token(db.Model):
+    token = db.Column(db.Text, primary_key=True)
+    
+    def __repr__(self):
+        return '<Token %r>' % self.token
