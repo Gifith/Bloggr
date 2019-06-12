@@ -1,8 +1,9 @@
-from flask import Blueprint,request,Response,jsonify
+from flask import Blueprint,request,Response,jsonify, redirect
 from datetime import datetime
 import jwt
-
-from db.modele import Token
+import random
+import hashlib
+from db.modele import Token, User
 from db import db
 ###########################################################
 TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
@@ -30,9 +31,10 @@ def login():
         if request.is_json :
             return jsonify({'token': tokenVal})
         else:
-            resp = make_response('http://google.fr')
-            resp.set_cookie('token', user)
-            return resp
+            #resp = make_response('http://google.fr')
+            #resp.set_cookie('token', user)
+            #return resp
+            return redirect('http://google.fr')
     else:
         db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
         db.session.commit()
