@@ -7,43 +7,46 @@ from db import db
 ###########################################################
 TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
 
-toks = []
+##TO DELETE AFTER TESTS
+@TokensAPI.route("/", methods=["GET"])
+def displayTokens():
+    Liste = Token.query.all()
+    for i in Liste:
+        print(i.jwt, i.expiration)
+    return jsonify("watch the logs")
+
 @TokensAPI.route("/", methods=["POST"])
 def login():
+    print('success')
     u = request.get_json()['username']
     pw = request.get_json()['password']
-    return jsonify({'token': makeToken(u, pw)})
+
+    tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+
+    if countToken(tokenVal) == 0:
+        tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
+        db.session.add(tokObjToAdd)
+        db.session.commit()
+        return jsonify({'token': tokenVal})
+    else:
+        db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
+        db.session.commit()
+        return jsonify({'token': tokenVal})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
     tok = request.headers.get('Authorization').split(' ')
     tok = tok[1]
-    print(tok[0])
-    print(tok[1])
-    print(toks.count(tok))
-    if toks.count(tok)>0:
-        toks.remove(tok)
-        tokObjToDel = Token(jwt=tok)
-        db.session.delete(tokObjToDel)
+    if countToken(tok)>0 :
+        print('token exists, delete')
+        db.session.query(Token).filter(Token.jwt == tok).delete()
         db.session.commit()
         return Response(status=204, mimetype='application/json')
     else:
         return Response(status=410, mimetype='application/json')
 
-
-def makeToken(u,pw):
-    if 1 == 1 :
-        tokJwt = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
-        toks.append(tokJwt)
-        ####
-        tokObjToAdd = Token(jwt=tokJwt,expiration=datetime.now())
-        db.session.add(tokObjToAdd)
-        db.session.commit()
-        ####
-        print(tokJwt)
-        return tokJwt
-    else:
-        return Response(status=401, mimetype='application/json')
+def countToken(tokenVal):
+    return db.session.query(Token).filter( Token.jwt==tokenVal ).count()
 
 #1xx Informational
 #100 Continue
