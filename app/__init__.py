@@ -2,12 +2,14 @@ from os.path import join, isfile, abspath, dirname, exists
 from os import makedirs, remove
 from flask import Flask
 
+
 from .users import UsersAPI
 from .tokens import TokensAPI
 from .posts import PostAPI
-from db.modele import db, User
+from .app import app
+from db.modele import User
 
-app = Flask(__name__)
+
 
 app.register_blueprint(UsersAPI)
 app.register_blueprint(PostAPI)
