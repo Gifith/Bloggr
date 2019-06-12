@@ -80,7 +80,7 @@ def login():
             print("refresh token, source web")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
-        return redirect('https://google.fr')##response for web client
+            return redirect(url_for('UsersApi.get_users'))##response for web client
         
 
 @TokensAPI.route("/", methods=["DELETE"])
