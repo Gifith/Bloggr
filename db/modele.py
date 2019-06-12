@@ -1,14 +1,6 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from os.path import join, abspath, dirname
-
-from app import app
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + join(abspath(dirname(dirname(__file__))), 'storage', 'app.db')
-db = SQLAlchemy(app)
-
-print app.config['SQLALCHEMY_DATABASE_URI']
+from .db import db
 
 TagPostIndex = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
