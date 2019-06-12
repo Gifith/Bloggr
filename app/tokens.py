@@ -18,33 +18,26 @@ def displayTokens():
 
 @TokensAPI.route("/", methods=["POST"])
 def login():
-    if not request.form['email'] or not request.form['password'] or not request.form['username']:
-        return redirect("../users/create", code=400)
-    else:
-        #u = request.get_json()['username']
-        #pw = request.get_json()['password']
-        u = request.form['username']
-        pw = request.form['password']
+    print('success')
+    u = request.get_json()['username']
+    pw = request.get_json()['password']
 
-        tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
-
-        if countToken(tokenVal) == 0:
-
-            info = User.query.filter_by(username=u).first()
-            if info is None:
-                return redirect("./users/create", code=401)
-            else:
-                hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
-                if hash == info.pw:
-                    tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
-                    db.session.add(tokObjToAdd)
-                    db.session.commit()
-
-                    return redirect("./users", code=202)
-        else:
-            db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
-            db.session.commit()
+    tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+    
+    if countToken(tokenVal) == 0:
+        tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
+        db.session.add(tokObjToAdd)
+        db.session.commit()
+        if request.is_json :
             return jsonify({'token': tokenVal})
+        else:
+            resp = make_response('http://google.fr')
+            resp.set_cookie('token', user)
+            return resp
+    else:
+        db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
+        db.session.commit()
+    return jsonify({'token': tokenVal})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
