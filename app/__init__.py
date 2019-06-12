@@ -12,7 +12,7 @@ from db import db
 
 from datetime import date, datetime
 
-from db.AntiToken import remove_old_tokens
+from db.antitoken import remove_old_tokens
 
 
 app.register_blueprint(UsersAPI)
