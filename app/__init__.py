@@ -36,4 +36,6 @@ else:
 
 
 print("Utilisateurs:")
-print(User.query.all())
+Liste = User.query.all()
+for i in Liste:
+    print(i.id, i.username, i.email)
