@@ -22,16 +22,21 @@ def login():
     pw = request.get_json()['password']
 
     tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
-
+    
     if countToken(tokenVal) == 0:
         tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
         db.session.add(tokObjToAdd)
         db.session.commit()
-        return jsonify({'token': tokenVal})
+        if request.is_json :
+            return jsonify({'token': tokenVal})
+        else:
+            resp = make_response('http://google.fr')
+            resp.set_cookie('token', user)
+            return resp
     else:
         db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
         db.session.commit()
-        return jsonify({'token': tokenVal})
+    return jsonify({'token': tokenVal})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
