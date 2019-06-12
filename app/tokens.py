@@ -1,9 +1,10 @@
 from flask import Blueprint,request,Response,jsonify
-from db.modele import Token
-from db import db
-
+from datetime import datetime
 import jwt
 
+from db.modele import Token
+from db import db
+###########################################################
 TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
 
 toks = []
@@ -22,6 +23,9 @@ def logout():
     print(toks.count(tok))
     if toks.count(tok)>0:
         toks.remove(tok)
+        tokObjToDel = Token(jwt=tok)
+        db.session.delete(tokObjToDel)
+        db.session.commit()
         return Response(status=204, mimetype='application/json')
     else:
         return Response(status=410, mimetype='application/json')
@@ -32,8 +36,8 @@ def makeToken(u,pw):
         tokJwt = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
         toks.append(tokJwt)
         ####
-        tokObj = Token(jwt=tokJwt,expiration='2019-06-15')
-        db.session.add(tokObj)
+        tokObjToAdd = Token(jwt=tokJwt,expiration=datetime.now())
+        db.session.add(tokObjToAdd)
         db.session.commit()
         ####
         print(tokJwt)
