@@ -67,7 +67,7 @@ def login():
 
             info = User.query.filter_by(username=u).first()
             if info is None:
-                return redirect('UsersApi.get_userform', code=401)
+                return redirect(url_for('UsersApi.get_userform'), code=401)
             else:
                 #hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
                 if pw == info.hash:
@@ -80,7 +80,7 @@ def login():
             print("refresh token, source web")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
-        return redirect('https://google.fr')##response for web client
+            return redirect('https://google.fr')##response for web client
         
 
 @TokensAPI.route("/", methods=["DELETE"])
