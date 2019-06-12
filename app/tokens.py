@@ -6,19 +6,22 @@ TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
 toks = []
 @TokensAPI.route("/", methods=["POST"])
 def login():
-    u = request.get_json()['username']
-    pw = request.get_json()['password']
-    return jsonify(makeToken(u, pw))  
+    g.u = request.get_json()['username']
+    g.pw = request.get_json()['password']
+    return jsonify({'token': makeToken(g.u, g.pw)})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
-    tok = request.headers.get('Authorization')
+    tok = request.headers.get('Authorization').split(' ')
+    tok = tok[1]
+    print(tok[0])
+    print(tok[1])
     print(toks.count(tok))
     if toks.count(tok)>0:
         toks.remove(tok)
         return Response(status=204, mimetype='application/json')
     else:
-        return Response(status=418, mimetype='application/json')
+        return Response(status=410, mimetype='application/json')
 
 def makeToken(u,pw):
     if 1 == 1 :
@@ -28,6 +31,7 @@ def makeToken(u,pw):
         return valid
     else:
         return Response(status=401, mimetype='application/json')
+
 #1xx Informational
 #100 Continue
 #101 Switching Protocols
