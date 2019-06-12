@@ -56,4 +56,4 @@ class Token(db.Model):
     expiration = db.Column(db.DateTime, nullable=False)
     
     def __repr__(self):
-        return '<Token %r>' % self.token
+        return '<Token %r>' % self.jwt

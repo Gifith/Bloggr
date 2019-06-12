@@ -5,6 +5,7 @@ from flask import Flask
 from .users import UsersAPI
 from .tokens import TokensAPI
 from .posts import PostAPI
+from db.modele import db, User
 
 app = Flask(__name__)
 
@@ -16,7 +17,6 @@ app.register_blueprint(TokensAPI)
 def hello():
     return "Hello World !"
 
-from db.modele import db, User
 
 if isfile( join(abspath(dirname(dirname(__file__))), 'storage', 'app.db') ) == False:
     if not exists(join(abspath(dirname(dirname(__file__))), 'storage')):
