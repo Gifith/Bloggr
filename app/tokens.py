@@ -1,4 +1,4 @@
-from flask import Blueprint,request,Response,jsonify, redirect
+from flask import Blueprint,request,Response,jsonify, redirect, url_for
 from datetime import datetime
 import jwt
 import random
@@ -32,15 +32,14 @@ def login():
 
             info = User.query.filter_by(username=u).first()
             if info is None:
-                return redirect("./users/create", code=401)
+                return redirect('UsersApi.get_userform', code=401)
             else:
                 #hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
-                if pw == info.password:
+                if pw == info.hash:
                     tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
                     db.session.add(tokObjToAdd)
                     db.session.commit()
-
-                    return redirect("./users", code=202)
+                    return redirect(url_for('UsersApi.get_users'))
         else:
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
