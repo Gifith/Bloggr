@@ -15,40 +15,36 @@ def displayTokens():
     for i in Liste:
         print(i.jwt, i.expiration)
     return jsonify("watch the logs")
-#
-
-#
 
 @TokensAPI.route("/", methods=["POST"])
 def login():
-    if request.method == 'POST':
-        if not request.form['email'] or not request.form['password'] or not request.form['username']:
-            return redirect("../users/create", code=400)
-        else:
-            #u = request.get_json()['username']
-            #pw = request.get_json()['password']
-            u = request.form['username']
-            pw = request.form['password']
+    if not request.form['email'] or not request.form['password'] or not request.form['username']:
+        return redirect("../users/create", code=400)
+    else:
+        #u = request.get_json()['username']
+        #pw = request.get_json()['password']
+        u = request.form['username']
+        pw = request.form['password']
 
-            tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+        tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
 
-            if countToken(tokenVal) == 0:
+        if countToken(tokenVal) == 0:
 
-                info = User.query.filter_by(username=u).first()
-                if info is None:
-                    return redirect("./users/create", code=401)
-                else:
-                    hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
-                    if hash == info.pw:
-                        tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
-                        db.session.add(tokObjToAdd)
-                        db.session.commit()
-
-                        return redirect("./users", code=202)
+            info = User.query.filter_by(username=u).first()
+            if info is None:
+                return redirect("./users/create", code=401)
             else:
-                db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
-                db.session.commit()
-                return jsonify({'token': tokenVal})
+                hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
+                if hash == info.pw:
+                    tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
+                    db.session.add(tokObjToAdd)
+                    db.session.commit()
+
+                    return redirect("./users", code=202)
+        else:
+            db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
+            db.session.commit()
+            return jsonify({'token': tokenVal})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
