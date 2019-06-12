@@ -67,7 +67,7 @@ def login():
 
             info = User.query.filter_by(username=u).first()
             if info is None:
-                return redirect(url_for('UsersApi.get_userform'), code=401)
+                return redirect(url_for('UsersApi.get_userform'))
             else:
                 #hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
                 if pw == info.hash:
