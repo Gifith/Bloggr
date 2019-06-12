@@ -1,4 +1,7 @@
 from flask import Blueprint,request,Response,jsonify
+from db.modele import Token
+from db import db
+
 import jwt
 
 TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
@@ -6,9 +9,9 @@ TokensAPI = Blueprint('TokensApi', __name__, url_prefix="/tokens")
 toks = []
 @TokensAPI.route("/", methods=["POST"])
 def login():
-    g.u = request.get_json()['username']
-    g.pw = request.get_json()['password']
-    return jsonify({'token': makeToken(g.u, g.pw)})
+    u = request.get_json()['username']
+    pw = request.get_json()['password']
+    return jsonify({'token': makeToken(u, pw)})
 
 @TokensAPI.route("/", methods=["DELETE"])
 def logout():
@@ -23,12 +26,18 @@ def logout():
     else:
         return Response(status=410, mimetype='application/json')
 
+
 def makeToken(u,pw):
     if 1 == 1 :
-        valid = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
-        toks.append(valid)
-        print(valid)
-        return valid
+        tokJwt = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+        toks.append(tokJwt)
+        ####
+        tokObj = Token(jwt=tokJwt,expiration='2019-06-15')
+        db.session.add(tokObj)
+        db.session.commit()
+        ####
+        print(tokJwt)
+        return tokJwt
     else:
         return Response(status=401, mimetype='application/json')
 
