@@ -53,6 +53,7 @@ class Tag(db.Model):
 
 class Token(db.Model):
     token = db.Column(db.Text, primary_key=True)
+    expiration = db.Column(db.DateTime, nullable=False)
     
     def __repr__(self):
         return '<Token %r>' % self.token
