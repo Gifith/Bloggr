@@ -50,12 +50,12 @@ def login():
         pw = request.get_json()['password']
         tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
         if countToken(tokenVal) == 0:
-            print("create token, source postman")
+            print("CREATE TOKEN - AJAX")
             tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
             db.session.add(tokObjToAdd)
             db.session.commit()            
         else:
-            print("refresh token, source postman")
+            print("UPDATE TOKEN - AJAX")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
         return jsonify({'token': tokenVal})##response for json client
@@ -64,7 +64,7 @@ def login():
         pw = request.form['password']
         tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
         if countToken(tokenVal) == 0:
-
+            print("CREATE TOKEN - WEB")
             info = User.query.filter_by(username=u).first()
             if info is None:
                 return redirect(url_for('UsersApi.get_userform'))
@@ -80,7 +80,7 @@ def login():
                     response.set_cookie('token', tokenVal)
                     return response
         else:
-            print("refresh token, source web")
+            print("UPDATE TOKEN - WEB")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
             #return redirect(url_for('UsersApi.get_users'))##response for web client
