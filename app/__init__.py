@@ -10,6 +10,7 @@ from db.modele import User, Token, Post
 from decorators.login import require_login
 from decorators.admin import require_admin
 import hashlib
+from uuid import uuid4
 
 from db import db
 
@@ -41,19 +42,24 @@ def admin():
 rootdir = abspath(dirname(dirname(__file__)))
 storagedir = join(rootdir,'storage') 
 
-
-if not isfile( join(storagedir, 'app.db') ) and not exists(storagedir):
+if not exists(storagedir):
     makedirs(storagedir)
+
+if not isfile( join(storagedir, 'app.db') ):
+    print "Before creating database..."
+
     db.create_all()
 
-    sel = hashlib.sha512(uuid4())
-    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    print "After creating database..."
+
+    sel = hashlib.sha256(uuid4().hex).hexdigest()
+    hash = hashlib.sha256('toto%r' % sel).hexdigest()
     user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = hash, sel = sel, role = 0, active = 1)
-    sel = hashlib.sha512(uuid4())
-    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    sel = hashlib.sha256(uuid4().hex).hexdigest()
+    hash = hashlib.sha256('toto%r' % sel).hexdigest()
     user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = hash, sel = sel, role = 1, active = 1)
-    sel = hashlib.sha512(uuid4())
-    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    sel = hashlib.sha256(uuid4().hex).hexdigest()
+    hash = hashlib.sha256('toto%r' % sel).hexdigest()
     user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = hash, sel = sel, role = 0, active = 1)
 
 
@@ -75,10 +81,8 @@ if not isfile( join(storagedir, 'app.db') ) and not exists(storagedir):
     db.session.add(post2)
     db.session.add(post3)
     db.session.commit()
-        
-else:
-    if isfile( join(storagedir, 'app.db') ):
-        remove(join(storagedir, 'app.db'))
+
+    print "After Fixtures..."
 
 
 #print("Utilisateurs:")
@@ -93,6 +97,7 @@ else:
 #print(Token.query.all())
 
 Liste = User.query.all()
+#db.session.query(User).all()
 for i in Liste:
     print(i.id, i.username, i.email)
 

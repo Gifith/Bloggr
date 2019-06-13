@@ -1,4 +1,15 @@
 {% extends "main.jinja" %}
 {% block content %}
     <p>SUB TEMPLATE CONTENT</p>
+    <button id="toto" class="butt">toto</button>
+{% endblock %}
+{% block customscripts %}
+<script>
+$( document ).ready(function() {
+    console.log( "ready!" );
+    $( "#toto" ).click(function() {
+        alert( "TOTO CLICKED" );
+    });
+});
+</script>
 {% endblock %}

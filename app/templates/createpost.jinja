@@ -1,0 +1,52 @@
+{% extends "main.jinja" %}
+{% block content %}
+    <h1>Create a post</h1>
+    <div id="create-post-inputs-cont" >
+        <label>title</label>
+        <input id="create-post-input-title" type="text"/>
+        <label>corpus</label>
+        <input id="create-post-input-corpus" type="text"/>
+        <label>Image</label>
+        <input id="create-post-input-image" type="text"/>
+        <label>Publish on create ?</label>
+        <input id="create-post-input-active" type="checkbox">
+        <button id="create-post-submit-button">Create</button>
+    </div>
+{% endblock %}
+{% block customscripts %}
+<script>
+$( document ).ready(function() {
+    $( "#create-post-submit-button" ).click(function() {
+        /*
+            AJAX
+        Create Post
+        Needs data validation, but let's try it anyways
+        */
+        createPost($("#create-post-input-title").val(),
+                    $("#create-post-input-corpus").val(),
+                    $("#create-post-input-image").val(),
+                    $("#create-post-input-active").val());
+    });
+});
+
+function createPost(title, corpus, imagelink, isActive){
+
+$.ajax({
+   type: "POST",
+   data: {  title:title,
+            corpus:corpus,
+            imagelink:imagelink,
+            isActive:isActive
+        },
+   url: "index.php",
+   success: function(msg){
+     alert('sucess !');
+   },
+   failure: function(msg){
+       alert('Error creating this post, please try again !');
+   }
+});
+
+}
+</script>
+{% endblock %}
