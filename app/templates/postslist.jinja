@@ -4,14 +4,14 @@
     <hr>
 
     {% for post in posts %}
-        <b> {{ post.titre }} </b>
+        <h3><b> {{ post.titre }} </b></h3>
         <ul>
             <img src="{{ post.Image }}">
             <br>
             <li> {{ post.corpus }}</li>
             <br>
             <i> Date de création : {{ post.datecree }} <br>
-              Date de modificaiton : {{ post.datemodif }}</i>
+              Date de modification : {{ post.datemodif }}</i>
             <br>
         </ul>
         
