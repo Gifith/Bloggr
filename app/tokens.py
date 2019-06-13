@@ -20,31 +20,6 @@ def displayTokens():
 def login(): 
   #  if not request.form['email'] or not request.form['password'] or not request.form['username']:
   #      return redirect("../users/create", code=400)
-  #  else:
-  #      #u = request.get_json()['username']
-  #      #pw = request.get_json()['password']
-  #      u = request.form['username']
-  #      pw = request.form['password']
-#
-  #      tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
-#
-  #      if countToken(tokenVal) == 0:
-#
-  #          info = User.query.filter_by(username=u).first()
-  #          if info is None:
-  #              return redirect("./users/create", code=401)
-  #          else:
-  #              #hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
-  #              if pw == info.password:
-  #                  tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
-  #                  db.session.add(tokObjToAdd)
-  #                  db.session.commit()
-#
-  #                  return redirect("./users", code=202)
-  #      else:
-  #          db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
-  #          db.session.commit()
-
     if request.is_json :
         u = request.get_json()['username']
         pw = request.get_json()['password']
