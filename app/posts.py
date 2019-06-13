@@ -7,11 +7,9 @@ from db import db
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
 @PostAPI.route("/list", methods=["GET"])
-def get_userform():
-	print(Post.query.all())
+def get_postlist():
 	return render_template('postslist.jinja', posts = Post.query.all())
-
-#def get_posts():
+#def get_postslist():
 #    Liste = Posts.query.all()
 #    for i in Liste:
 #        print(i.titre, i.corpus,i.datecree, i.creator)
@@ -20,9 +18,12 @@ def get_userform():
 
 @PostAPI.route("/<int:post_id>", methods=["GET"])
 def get_post(post_id):
-    Post = Posts.query.get(post_id)
-    print(Post.titre, Post.corpus,Post.datecree, Post.creator)
-    return Post
+	return render_template('post.jinja', post = Post.query.get(post_id))
+#def get_post(post_id):
+#    Post = Posts.query.get(post_id)
+#    print(Post.titre, Post.corpus,Post.datecree, Post.creator)
+#    return Post
+
 
 @PostAPI.route("/", methods=["POST"])
 #def publish_post():
