@@ -7,6 +7,7 @@ from .tokens import TokensAPI
 from .posts import PostAPI
 from .app import app
 from db.modele import User, Token
+from decorators.login import require_login
 
 from db import db
 
@@ -22,6 +23,16 @@ app.register_blueprint(TokensAPI)
 @app.route("/")
 def hello():
     return "Hello World !"
+
+
+
+
+@app.route("/logged")
+@require_login
+def loggedin():
+    return "Success"
+
+
 
 rootdir = abspath(dirname(dirname(__file__)))
 storagedir = join(rootdir,'storage') 

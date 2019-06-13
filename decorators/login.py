@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import g, request, redirect, url_for, abort
+from flask import g, request, redirect, abort
 from db import db
 from db.modele import Token
 import datetime

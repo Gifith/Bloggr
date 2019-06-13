@@ -9,7 +9,7 @@ def get_users():
 
 
 
-@UsersAPI.route("/create", methods=["GET"])
+@UsersAPI.route("/login", methods=["GET"])
 def get_userform():
     return render_template('userform.jinja')
 
