@@ -8,6 +8,7 @@ from .posts import PostAPI
 from .app import app
 from db.modele import User, Token
 from decorators.login import require_login
+from decorators.admin import require_admin
 
 from db import db
 
@@ -30,8 +31,14 @@ def hello():
 @app.route("/logged")
 @require_login
 def loggedin():
-    return "Success"
+    return "You are logged"
 
+
+@app.route("/admin")
+@require_login
+@require_admin
+def admin():
+    return "Admin connected"
 
 
 rootdir = abspath(dirname(dirname(__file__)))
@@ -42,7 +49,7 @@ if not isfile( join(storagedir, 'app.db') ) and not exists(storagedir):
     makedirs(storagedir)
     db.create_all()
     user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = '721GBBH1', sel = 'IJZNhnahzb', role = 0, active = 1)
-    user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = 'dzah124NDUI7', sel = 'age2d2R3', role = 0, active = 1)
+    user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = 'dzah124NDUI7', sel = 'age2d2R3', role = 1, active = 1)
     user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = 'gazr7nd7', sel = 'az928Klm2', role = 0, active = 1)
     token1 = Token(jwt = 'XXXXXXXXXXXXXXXXXXXXX', expiration = datetime(2022, 12, 14, 10, 0, 0))
     token2 = Token(jwt = 'YYYYYYYYYYYYYYYYYYYYY', expiration = datetime(2002, 3, 15, 10, 0, 0))
@@ -63,7 +70,7 @@ else:
 db.create_all()
 
 user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = '721GBBH1', sel = 'IJZNhnahzb', role = 0, active = 1)
-user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = 'dzah124NDUI7', sel = 'age2d2R3', role = 0, active = 1)
+user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = 'dzah124NDUI7', sel = 'age2d2R3', role = True, active = 1)
 user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = 'gazr7nd7', sel = 'az928Klm2', role = 0, active = 1)
 db.session.add(user1)
 db.session.add(user2)

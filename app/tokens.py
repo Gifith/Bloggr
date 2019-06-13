@@ -53,6 +53,7 @@ def login():
                     res = redirect(url_for('UsersApi.get_users'),code=302)
                     res.set_cookie('token', tokenVal)
                     return res
+                return redirect(url_for('UsersApi.get_userform'))
         else:
             print("UPDATE TOKEN - WEB")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
