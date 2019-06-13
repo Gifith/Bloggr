@@ -1,0 +1,14 @@
+ <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Blogger</title>
+    {% load staticfiles %}
+    <linktype=text/javascript src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+    </head>   
+     <body class="body" style="background-color:#f9f9f9">
+      {% block content %}
+        <p>MAIN TEMPLATE CONTENT</p>
+        {% endblock %}
+     </body>
+    </html>

@@ -1,3 +1,5 @@
+<script type=text/javascript src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+
 <form method="post" action="../tokens">
   <div class="container">
     <h1>Se connecter</h1>
@@ -15,7 +17,12 @@
   </div>
 </form>
 
-
+<button id="toto">toto</button>
+<script type=text/javascript>
+$('#toto').click(function() {
+  console.log('button clicked');
+});
+</script>
 <style>
 * {box-sizing: border-box}
 /* Add padding to containers */
