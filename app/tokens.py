@@ -44,7 +44,7 @@ def login():
             if info is None:
                 return redirect(url_for('UsersApi.get_userform'))
             else:
-                #hash = hashlib.pbkdf2_hmac('sha256', pw, info.salt)
+                hash = hashlib.sha256(pw + info.sel).hexdigest()
                 if pw == info.hash:
                     print("create token, source web")
                     tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())

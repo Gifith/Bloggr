@@ -1,9 +1,9 @@
 <form method="post" action="../tokens">
   <div class="container">
     <h1>Liste de Post</h1>
+    <br>
     <hr>
-
-    {% for post in posts %}
+    <br><br>
         <h3><b> {{ post.titre }} </b></h3>
         <ul>
             <img src="{{ post.Image }}">
@@ -16,8 +16,6 @@
         </ul>
         
     <hr>
-
-    {% endfor %}
 
   </div>
 </form>

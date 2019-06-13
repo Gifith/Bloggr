@@ -4,13 +4,22 @@ from decorators.login import require_login
 from decorators.admin import require_admin
 from db.modele import User
 from db import db
+import time
+from uuid import uuid4
+import hashlib
 
 UsersAPI = Blueprint('UsersApi', __name__, url_prefix="/users")
 
-@UsersAPI.route("/", methods=["GET","POST"])
+@UsersAPI.route("/", methods=["GET"])
 def get_users():
-    return "success"
+    return "Accueil users"
 
+
+@UsersAPI.route("/register", methods=["GET"])
+@require_login
+@require_admin
+def set_user():
+    return render_template('register.jinja')
 
 
 @UsersAPI.route("/login", methods=["GET"])
@@ -21,7 +30,37 @@ def get_userform():
 @UsersAPI.route("/list", methods=["GET"])
 @require_login
 def get_userlist():
-    return render_template('userslist.jinja', users = User.query.all())
+    if request.is_json :
+        return jsonify(json_list = User.query.with_entities(User.email, User.username))
+    else:
+        return render_template('userslist.jinja', users = User.query.all())
+
+
+@UsersAPI.route("/saving", methods=["POST"])
+@require_login
+def save_user():
+    if request.is_json:
+        m = request.get_json()['email']
+        u = request.get_json()['username']
+        pw = request.get_json()['password']
+    else:
+        m = request.form['email']
+        u = request.form['username']
+        pw = request.form['password']
+
+    ucheck = User.query.filter( username = u ).count()
+    mcheck = User.query.filter( email = m ).count()
+    if ucheck == 0 and mcheck == 0:
+        id = db.session.query(db.func.max(User.id)).first() + 1
+        sel = hashlib.sha256(uuid4()).hexdigest()
+        hash = hashlib.sha256(pw + sel).hexdigest()
+        user = User(id = id, username = u, email = m, hash = hash, sel = sel, role = 0, active = 1)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('UsersApi.get_userlist'))
+    else:
+        abort(203)
+
 
 #1xx Informational
 #100 Continue

@@ -9,6 +9,7 @@ from .app import app
 from db.modele import User, Token, Post
 from decorators.login import require_login
 from decorators.admin import require_admin
+import hashlib
 
 from db import db
 
@@ -44,9 +45,19 @@ storagedir = join(rootdir,'storage')
 if not isfile( join(storagedir, 'app.db') ) and not exists(storagedir):
     makedirs(storagedir)
     db.create_all()
-    user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = '721GBBH1', sel = 'IJZNhnahzb', role = 0, active = 1)
-    user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = 'dzah124NDUI7', sel = 'age2d2R3', role = 1, active = 1)
-    user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = 'gazr7nd7', sel = 'az928Klm2', role = 0, active = 1)
+
+    sel = hashlib.sha512(uuid4())
+    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = hash, sel = sel, role = 0, active = 1)
+    sel = hashlib.sha512(uuid4())
+    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = hash, sel = sel, role = 1, active = 1)
+    sel = hashlib.sha512(uuid4())
+    hash = hashlib.pbkdf2_hmac('sha256', 'toto', sel)
+    user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = hash, sel = sel, role = 0, active = 1)
+
+
+    
     token1 = Token(jwt = 'XXXXXXXXXXXXXXXXXXXXX', expiration = datetime(2022, 12, 14, 10, 0, 0))
     token2 = Token(jwt = 'YYYYYYYYYYYYYYYYYYYYY', expiration = datetime(2002, 3, 15, 10, 0, 0))
     token3 = Token(jwt = 'ZZZZZZZZZZZZZZZZZZZZZ', expiration = datetime(2222, 7, 10, 10, 0, 0))
