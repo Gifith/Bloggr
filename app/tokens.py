@@ -75,12 +75,23 @@ def login():
                     tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
                     db.session.add(tokObjToAdd)
                     db.session.commit()
-                    return redirect(url_for('UsersApi.get_users'))
+                    redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
+                    #response = make_response(redirect_with_cookie)  
+                    response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
+                    #response.set_cookie('cookie_name',value='values')
+                    response.set_cookie('token', tokenVal)
+                    return response
         else:
             print("refresh token, source web")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
-            return redirect(url_for('UsersApi.get_users'))##response for web client
+            #return redirect(url_for('UsersApi.get_users'))##response for web client
+            redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
+            #response = make_response(redirect_with_cookie)  
+            response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
+            #response.set_cookie('cookie_name',value='values')
+            response.set_cookie('token', tokenVal)
+            return response
         
 
 @TokensAPI.route("/", methods=["DELETE"])
@@ -91,7 +102,7 @@ def logout():
         print('token exists, delete')
         db.session.query(Token).filter(Token.jwt == tok).delete()
         db.session.commit()
-        return Response(status=204, mimetype='application/json')
+        return Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
     else:
         return Response(status=410, mimetype='application/json')
 
