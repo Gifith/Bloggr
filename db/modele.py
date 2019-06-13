@@ -25,8 +25,8 @@ class Post(db.Model):
     corpus = db.Column(db.Text, nullable=False)
     datecree = db.Column(db.DateTime, nullable=False)
     datemodif = db.Column(db.DateTime, nullable=False)
-    creator = db.Column(db.String(80), db.ForeignKey('user.id'), nullable=False)
-    Image = db.Column(db.String(256), unique=True, nullable=False)
+    creator = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    Image = db.Column(db.Text, unique=True, nullable=False)
     active = db.Column(db.Boolean, nullable=False)
     TagPostIndex = db.relationship('Tag', secondary=TagPostIndex, lazy='subquery',
         backref=db.backref('post', lazy=True))

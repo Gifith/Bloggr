@@ -1,4 +1,6 @@
 from flask import Blueprint
+from db.modele import Post
+from db import db
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
