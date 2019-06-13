@@ -76,9 +76,7 @@ def login():
                     db.session.add(tokObjToAdd)
                     db.session.commit()
                     redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
-                    #response = make_response(redirect_with_cookie)  
                     response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
-                    #response.set_cookie('cookie_name',value='values')
                     response.set_cookie('token', tokenVal)
                     return response
         else:
@@ -87,9 +85,7 @@ def login():
             db.session.commit()
             #return redirect(url_for('UsersApi.get_users'))##response for web client
             redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
-            #response = make_response(redirect_with_cookie)  
             response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
-            #response.set_cookie('cookie_name',value='values')
             response.set_cookie('token', tokenVal)
             return response
         
