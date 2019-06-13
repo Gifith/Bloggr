@@ -48,7 +48,7 @@ def login():
     if request.is_json :
         u = request.get_json()['username']
         pw = request.get_json()['password']
-        tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+        tokenVal = jwt.encode({"u":u,"pw":pw}, 'A python blogging platform', algorithm='HS256')
         if countToken(tokenVal) == 0:
             print("CREATE TOKEN - AJAX")
             tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
@@ -62,7 +62,7 @@ def login():
     else:
         u = request.form['username']
         pw = request.form['password']
-        tokenVal = jwt.encode({u:pw}, 'A python blogging platform', algorithm='HS256')
+        tokenVal = jwt.encode({"u":u,"pw":pw}, 'A python blogging platform', algorithm='HS256')
         if countToken(tokenVal) == 0:
             print("CREATE TOKEN - WEB")
             info = User.query.filter_by(username=u).first()
@@ -75,19 +75,16 @@ def login():
                     tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
                     db.session.add(tokObjToAdd)
                     db.session.commit()
-                    redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
-                    response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
-                    response.set_cookie('token', tokenVal)
-                    return response
+                    res = redirect(url_for('UsersApi.get_users'),code=302)
+                    res.set_cookie('token', tokenVal)
+                    return res
         else:
             print("UPDATE TOKEN - WEB")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))
             db.session.commit()
-            #return redirect(url_for('UsersApi.get_users'))##response for web client
-            redirect_with_cookie = redirect((url_for('UsersApi.get_users')))
-            response = Response(redirect((url_for('UsersApi.get_users'))),status=204, mimetype='application/json')
-            response.set_cookie('token', tokenVal)
-            return response
+            res = redirect(url_for('UsersApi.get_users'),code=302)
+            res.set_cookie('token', tokenVal)
+            return res
         
 
 @TokensAPI.route("/", methods=["DELETE"])
