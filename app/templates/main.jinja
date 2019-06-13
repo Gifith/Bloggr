@@ -1,19 +1,22 @@
 <!DOCTYPE html>
   <html lang="en">
     <head>
-      <meta charset="UTF-8">
-      <title>Blogger</title>
-      {% load staticfiles %}
-      <linktype=text/javascript src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
-      <style> {% block style %}
-          {% endblock %}</style>
+    <meta charset="UTF-8">
+    <title>Blogger</title>
+    <script type=text/javascript src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+    {% block style %}
+     <style></style>
+     {% endblock %}
     </head>   
     <body class="body" style="background-color:#f9f9f9">
 
         {% block content %}
         <p>MAIN TEMPLATE CONTENT</p>
         {% endblock %}
+     </body>
+    </html>
+    {% block customscripts %}
+    <script></script>
+    {% endblock %}
 
-        
-    </body>
-  </html>
+     
