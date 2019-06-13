@@ -1,0 +1,28 @@
+<form method="post" action="../tokens">
+  <div class="container">
+    <h1>Liste d'utilisateurs</h1>
+    <hr>
+
+    {% for user in users %}
+        <b> {{ user.username }} </b>
+        <ul>
+            <li> {{ user.email }}
+            </li>
+        </ul>
+        
+    <hr>
+
+    {% endfor %}
+
+  </div>
+</form>
+
+
+<style>
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+</style>

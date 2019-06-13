@@ -1,5 +1,9 @@
 from flask import Blueprint, render_template, request
 from os.path import join, dirname, abspath
+from decorators.login import require_login
+from decorators.admin import require_admin
+from db.modele import User
+from db import db
 
 UsersAPI = Blueprint('UsersApi', __name__, url_prefix="/users")
 
@@ -14,6 +18,10 @@ def get_userform():
     return render_template('userform.jinja')
 
 
+@UsersAPI.route("/list", methods=["GET"])
+@require_login
+def get_userlist():
+    return render_template('userslist.jinja', users = User.query.all())
 
 #1xx Informational
 #100 Continue

@@ -25,14 +25,10 @@ app.register_blueprint(TokensAPI)
 def hello():
     return "Hello World !"
 
-
-
-
 @app.route("/logged")
 @require_login
 def loggedin():
     return "You are logged"
-
 
 @app.route("/admin")
 @require_login
