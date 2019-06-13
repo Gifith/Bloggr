@@ -33,6 +33,7 @@ function createPost(title, corpus, imagelink, isActive){
 
 $.ajax({
    type: "POST",
+   content-type:'application/json',
    data: {  title:title,
             corpus:corpus,
             imagelink:imagelink,
