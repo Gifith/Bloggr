@@ -42,7 +42,7 @@ def get_user(user_id):
     if request.is_json :
         return jsonify(json_list = User.query.filter(User.id == user_id).first().with_entities(User.email, User.username))
     else:
-        return render_template('user.jinja', user = User.query.get(user_id))
+        return render_template('users.jinja', user = User.query.get(user_id))
 
 
 @UsersAPI.route("/saving", methods=["POST"])
