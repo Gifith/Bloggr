@@ -55,17 +55,17 @@ if not isfile( join(storagedir, 'app.db') ):
     sel = hashlib.sha256(uuid4().hex).hexdigest()
     hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
 
-    user1 = User(id = '01', username = 'premier', email = "premier@st.com", hash = hash1, sel = sel, role = 0, active = 1)
+    user1 = User( username = 'premier', email = "premier@st.com", hash = hash1, sel = sel, role = 0, active = 1)
 
     sel = hashlib.sha256(uuid4().hex).hexdigest()
     hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
     
-    user2 = User(id = '02', username = 'second', email = "second@nd.com", hash = hash1, sel = sel, role = 1, active = 1)
+    user2 = User( username = 'second', email = "second@nd.com", hash = hash1, sel = sel, role = 1, active = 1)
 
     sel = hashlib.sha256(uuid4().hex).hexdigest()
     hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
 
-    user3 = User(id = '03', username = 'third', email = "third@rd.com", hash = hash1, sel = sel, role = 0, active = 1)
+    user3 = User( username = 'third', email = "third@rd.com", hash = hash1, sel = sel, role = 0, active = 1)
 
 
     
