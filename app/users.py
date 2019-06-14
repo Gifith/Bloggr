@@ -123,7 +123,7 @@ def token_password(token):
 
 
 
-@UserAPI.route("/<int:user_id>", methods=["DELETE"])
+@UsersAPI.route("/<int:user_id>", methods=["DELETE"])
 @require_login
 @require_admin
 def delete_user(user_id):
