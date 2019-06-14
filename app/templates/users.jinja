@@ -1,0 +1,18 @@
+{% extends "main.jinja" %}
+{% block content %}
+<form method="post" action="../tokens">
+  <div class="container">
+    <h1>Liste d'utilisateurs</h1>
+    <hr>
+        <b> {{ user.username }} </b>
+        <ul>
+            <li> {{ user.email }}
+            </li>
+        </ul>
+        
+    <hr>
+
+  </div>
+</form>
+
+{% endblock %}
