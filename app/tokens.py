@@ -28,7 +28,8 @@ def login():
             print("CREATE TOKEN - AJAX")
             tokObjToAdd = Token(jwt=tokenVal,expiration=datetime.now())
             db.session.add(tokObjToAdd)
-            db.session.commit()            
+            db.session.commit() 
+            return jsonify({'token': tokenVal})##response for json client       
         else:
             print("UPDATE TOKEN - AJAX")
             db.session.query(Token).filter_by(jwt=tokenVal).update(dict(expiration=datetime.now()))

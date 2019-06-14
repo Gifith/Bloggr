@@ -40,6 +40,7 @@ def get_userlist():
 
 @UsersAPI.route("/<int:user_id>", methods=["GET"])
 @require_login
+@require_admin
 def get_user(user_id):
     if request.is_json :
         return jsonify(json_list = User.query.filter(User.id == user_id).first().with_entities(User.email, User.username))
@@ -122,6 +123,21 @@ def token_password(token):
 
 
 
+@UserAPI.route("/<int:user_id>", methods=["DELETE"])
+@require_login
+@require_admin
+def delete_user(user_id):
+    if countUser(user_id) > 0 :
+        print('user exists, delete (active = 0)')
+        db.session.update(User).where(User.id==user_id).values(active=False)
+        #db.session.query(User).filter(User.id == user_id ).delete()
+        db.session.commit()
+        return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
+    else:
+        return Response(status=410, mimetype='application/json')
+
+def countUser(user_id):
+    return db.session.query(Token).filter( User.id == user_id ).count()
 
 #1xx Informational
 #100 Continue

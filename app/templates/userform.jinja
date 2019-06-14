@@ -1,27 +1,48 @@
 {% extends "main.jinja" %}
 {% block content %}
-<script type=text/javascript src="{{url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
-
-<form method="post" action="../tokens">
+<form>
   <div class="container">
     <h1>Se connecter</h1>
     <p>Remplir le formulaire suivant: </p>
     <hr>
     
     <label for="username"><b>Nom d'utilisateur</b></label>
-    <input type="text" placeholder="Nom d'utilisateur" name="username" required>
+    <input id="user-input-username" type="text" placeholder="Nom d'utilisateur" name="username" required>
 
     <label for="password"><b>Mot de passe</b></label>
-    <input type="password" placeholder="Mot de passe" name="password" required>
+    <input id="user-input-password" type="password" placeholder="Mot de passe" name="password" required>
     <hr>
 
-    <button type="submit" class="registerbtn">Se connecter</button>
+    <button id="user-login-button" class="registerbtn">Se connecter</button>
   </div>
 </form>
 
-<script type=text/javascript>
-$('#toto').click(function() {
-  console.log('button clicked');
+
+{% endblock %}
+{% block customscripts %}
+<script>
+$( document ).ready(function() {
+    $( "#user-login-button" ).click(function(event) {
+        event.preventDefault();
+        login($("#user-input-username").val(),$("#user-input-password").val());
+    });
 });
 
+function login(u,pw){
+    $.ajax({
+        url : 'http://localhost:5000/tokens/',
+        type : 'POST',
+        data: JSON.stringify({username:u,password:pw}),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success : function(data) {              
+            alert(JSON.stringify(data));
+        },
+        error : function(request,error)
+        {
+            alert(error)
+        }
+    });
+}
+</script>
 {% endblock %}
