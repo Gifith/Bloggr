@@ -37,13 +37,13 @@ def get_userlist():
         return render_template('userslist.jinja', users = User.query.all())
 
 
-@UsersAPI.route("/<int:post_id>", methods=["GET"])
+@UsersAPI.route("/<int:user_id>", methods=["GET"])
 @require_login
 def get_user(user_id):
     if request.is_json :
         return jsonify(json_list = User.query.filter(User.id == user_id).first().with_entities(User.email, User.username))
     else:
-        return render_template('user.jinja', user = User.query.get(user_id))
+        return render_template('users.jinja', user = User.query.get(user_id))
 
 
 @UsersAPI.route("/saving", methods=["POST"])
