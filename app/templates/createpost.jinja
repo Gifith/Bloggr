@@ -30,24 +30,25 @@ $( document ).ready(function() {
 });
 
 function createPost(title, corpus, imagelink, isActive){
-
-$.ajax({
-   type: "POST",
-   content-type:'application/json',
-   data: {  title:title,
-            corpus:corpus,
-            imagelink:imagelink,
-            isActive:isActive
+//alert(window.location.href);
+    $.ajax({
+        url : 'http://localhost:5000/posts/',
+        type : 'POST',
+        data: JSON.stringify({  title:title,
+                                corpus:corpus,
+                                imagelink:imagelink,
+                                isActive:isActive
+        }),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success : function(data) {              
+            alert('Data: '+data);
         },
-   url: "index.php",
-   success: function(msg){
-     alert('sucess !');
-   },
-   failure: function(msg){
-       alert('Error creating this post, please try again !');
-   }
-});
-
+        error : function(request,error)
+        {
+            //alert("Request: "+JSON.stringify(request));
+        }
+    });
 }
 </script>
 {% endblock %}
