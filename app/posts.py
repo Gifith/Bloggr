@@ -26,7 +26,10 @@ def get_postslist():
 
 @PostAPI.route("/<int:post_id>", methods=["GET"])
 def get_post(post_id):
-	return render_template('post.jinja', post = Post.query.get(post_id))
+	if request.is_json :
+		return jsonify(json_list = Post.query.filter(Post.id == post_id).first().with_entities(Post.title, Post.corpus))
+	else:
+		return render_template('post.jinja', post = Post.query.get(post_id))
 #def get_post(post_id):
 #    Post = Posts.query.get(post_id)
 #    print(Post.titre, Post.corpus,Post.datecree, Post.creator)
