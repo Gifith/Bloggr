@@ -40,9 +40,9 @@ def get_userlist():
 @require_login
 def save_user():
     if request.is_json:
-        m = request.get_json()['email']
-        u = request.get_json()['username']
-        pw = request.get_json()['password']
+        m = request.json['email']
+        u = request.json['username']
+        pw = request.json['password']
     else:
         m = request.form['email']
         u = request.form['username']
@@ -52,14 +52,14 @@ def save_user():
     mcheck = User.query.filter( email = m ).count()
     if ucheck == 0 and mcheck == 0:
         id = db.session.query(db.func.max(User.id)).first() + 1
-        sel = hashlib.sha256(uuid4()).hexdigest()
-        hash = hashlib.sha256(pw + sel).hexdigest()
+        sel = hashlib.sha256(uuid4().hex).hexdigest()
+        hash = hashlib.sha256("{}{}".format(pw, sel)).hexdigest()
         user = User(id = id, username = u, email = m, hash = hash, sel = sel, role = 0, active = 1)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('UsersApi.get_userlist'))
     else:
-        abort(203)
+        abort(422)
 
 
 #1xx Informational
