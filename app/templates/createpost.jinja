@@ -35,8 +35,9 @@ $( document ).ready(function() {
 function createPost(title, corpus, imagelink,tags, isActive){
 //alert(window.location.href);
     $.ajax({
-        url : 'http://localhost:5000/posts/',
+        url : '/posts/',
         type : 'POST',
+        headers:{'Authorization': 'JWT '+document.cookie.split('=')[1]},
         data: JSON.stringify({  title:title,
                                 corpus:corpus,
                                 imagelink:imagelink,
@@ -46,11 +47,13 @@ function createPost(title, corpus, imagelink,tags, isActive){
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success : function(data) {              
-            alert('Data: '+data);
+            console.log(data);
+            window.location.href = '/posts/'+data.id
         },
         error : function(request,error)
         {
-            //alert("Request: "+JSON.stringify(request));
+            console.log(request);
+            console.log(error);
         }
     });
 }

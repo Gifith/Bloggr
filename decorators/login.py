@@ -29,7 +29,7 @@ def require_login(f):
             user = User.query.filter_by(username = user).first()
             if user is None:
                 abort(401)
-            g.user = user.username
+            g.user = user
             g.role = user.role
             print("Login OK")
             return f(*args, **kwargs)

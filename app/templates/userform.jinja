@@ -37,6 +37,9 @@ function login(u,pw){
         contentType: "application/json;charset=utf-8",
         success : function(data) {              
             alert(JSON.stringify(data));
+            //document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            document.cookie = "token="+data.token+""+";path=/";
+            
         },
         error : function(request,error)
         {

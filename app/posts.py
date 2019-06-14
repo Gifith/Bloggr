@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, Response, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, Response, jsonify, redirect, url_for, g
 from datetime import datetime
 from decorators.login import require_login
 from decorators.admin import require_admin
 from db.modele import Post,Tag
 from db import db
+import json as jsonLib
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
@@ -37,10 +38,12 @@ def get_post(post_id):
 
 
 @PostAPI.route("/create", methods=["GET"])
+@require_login
 def create_post():
 		return render_template('createpost.jinja')
 
 @PostAPI.route("/", methods=["POST"])
+@require_login
 def post_create():
 	json = request.get_json()
 	title = json['title']
@@ -49,12 +52,20 @@ def post_create():
 	tags = json['tags']
 	isActive = json['isActive']
 	print(title+" "+corpus+" "+imagelink)
-	post = Post(titre = title, corpus = corpus, datecree = datetime.now(), datemodif = datetime.now(),creator = 3, Image = imagelink , active = True)
+	post = Post(titre = title, corpus = corpus, datecree = datetime.now(), datemodif = datetime.now(),creator = g.user.id, Image = imagelink , active = True)
+	for tag in extract_tags(tags):
+		post.tags.append(tag)
 	db.session.add(post)
 	db.session.commit()
 	db.session.flush()
-	assoc_tags_to_post(extract_tags(tags),Post.id)
-	return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
+	#assoc_tags_to_post(extract_tags(tags),Post.id)
+	return jsonify(dict(
+		id=post.id,
+		titre=post.titre,
+		corpus=post.corpus,
+		datecree=post.datecree,
+		datemodif=post.datemodif
+	)), 201
 
 @PostAPI.route("/<int:post_id>", methods=["DELETE"])
 @require_login
@@ -73,16 +84,4 @@ def countPost(post_id):
 	return db.session.query(Token).filter( Post.id == post_id ).count()
 
 def extract_tags(tags):
-	tagList = tags.strip().split(',')
-	for tag in tagList:
-		newTag = Tag(titre=tag)
-		db.session.add(newTag)
-		db.session.commit()
-		db.session.flush()
-		tagids.append(newTag.id)
-		#If the tag exists, get the existant tag id. return the list, make the assoc
-	return tagids
-
-def assoc_tags_to_post(tagsIds, postId):
-	for ids in tagsIds:
-		db.session
+	return [ Tag(titre=tag) for tag in tags.strip().split(',') ]

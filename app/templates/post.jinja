@@ -16,7 +16,9 @@
               Date de modification : {{ post.datemodif }}</i>
             <br>
         </ul>
-        
+        {% for tag in post.tags %}
+        <span>{{ tag.titre }}</span>
+        {% endfor %}
     <hr>
 
   </div>

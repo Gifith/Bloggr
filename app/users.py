@@ -72,7 +72,7 @@ def save_user():
         abort(422)
 
 
-@UserAPI.route("/<int:user_id>", methods=["DELETE"])
+@UsersAPI.route("/<int:user_id>", methods=["DELETE"])
 @require_login
 @require_admin
 def delete_user(user_id):
