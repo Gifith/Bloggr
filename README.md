@@ -1,13 +1,13 @@
 # Bloggr
 
-Application back-end avec le micro framework Flask
-crée dans le cadre de notre cursus informatique à l'IMIE/Caen
+A back-end API using Flask framework
+built at IMIE/Caen
 
-## Utiliser le dépot
+## How to use
 
-Ces instructions vous permettront d'obtenir une copie du projet à faire fonctionner sur votre machine pour des fins de développement et de test
+What follows will help you to build this API on your own computer
 
-### Prérequis
+### Prerequites
 
 Python 2.7 :
  * [Python](https://www.python.org)
@@ -18,20 +18,117 @@ Pip :
 
 ### Installation
 
-1. Installer les dépendances
+1. Build dependancies
 
 ```
-Récupérer toutes les dépendance du projet dans le fichier requirements.txt
+All pip's dependances are located in requirements.txt
 ```
 
 
-2. Accéder à l'application
+2. Acessing our app
 
 ```
-Avec un terminal de commande, déplacez vous dans le dossier du projet puis executer server.py avec Python 2.7
+Using a console, move to the project folder then execute server.py with Python 2 >= 2.7
 ```
 
-### Auteurs
+### Session API
+
+#### GET /users/login
+
+Login user to our API
+
+#### Request:
+
+#### Body:
+
+```
+{
+    "username" : " Username",
+    "password" : " Your password "
+}
+```
+#### Response: 
+200 (OK) | 302 (FOUND)
+
+#### Body:
+
+200 (OK)
+```
+{
+    "token": " JWT Token"
+}
+```
+
+#### GET /users/register
+
+Add a user to our API
+
+#### Request:
+
+#### Body:
+```
+{
+    "username": " Username",
+    "email" : " Mail",
+    "password" : " Your password "
+}
+```
+
+#### POST /users/saving
+
+Add a given user to the database
+
+#### Request:
+
+#### GET /users/list
+
+Return a list of all users
+
+#### Request:
+
+#### Body:
+```
+{
+    User
+    {
+        email: " mail of a given user",
+        username: "username of a given user"
+    },
+    ...
+}
+```
+
+#### GET /users/reset
+
+Send an email to a given username/email combo
+
+#### Request:
+
+#### Body:
+```
+{
+    "username" : " Username",
+    "email" : " Email"
+}
+
+```
+
+#### POST /users/reset
+
+reset password of a given user
+
+#### Request:
+
+#### Body:
+```
+{
+    "pass": "new password"
+    "confirm": "new password again"
+}
+```
+
+
+### Authors
 
 * **Clément T**
 * **Martin M**

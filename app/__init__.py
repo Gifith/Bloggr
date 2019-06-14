@@ -1,6 +1,6 @@
 from os.path import join, isfile, abspath, dirname, exists
 from os import makedirs, remove
-from flask import Flask
+from flask import Flask, render_template
 
 from .users import UsersAPI
 from .tokens import TokensAPI
@@ -19,18 +19,7 @@ app.register_blueprint(TokensAPI)
 
 @app.route("/")
 def hello():
-    return "Hello World !"
-
-@app.route("/logged")
-@require_login
-def loggedin():
-    return "You are logged"
-
-@app.route("/admin")
-@require_login
-@require_admin
-def admin():
-    return "Admin connected"
+    return render_template('homepage.jinja')
 
 
 rootdir = abspath(dirname(dirname(__file__)))
