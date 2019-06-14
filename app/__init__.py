@@ -53,14 +53,19 @@ if not isfile( join(storagedir, 'app.db') ):
     print "After creating database..."
 
     sel = hashlib.sha256(uuid4().hex).hexdigest()
-    hash = hashlib.sha256('toto%r' % sel).hexdigest()
-    user1 = User(username = 'premier', email = "premier@st.com", hash = hash, sel = sel, role = 0, active = 1)
+    hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
+
+    user1 = User(username = 'premier', email = "premier@st.com", hash = hash1, sel = sel, role = 0, active = 1)
+
     sel = hashlib.sha256(uuid4().hex).hexdigest()
-    hash = hashlib.sha256('toto%r' % sel).hexdigest()
-    user2 = User(username = 'second', email = "second@nd.com", hash = hash, sel = sel, role = 1, active = 1)
+    hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
+    
+    user2 = User(username = 'second', email = "second@nd.com", hash = hash1, sel = sel, role = 1, active = 1)
+
     sel = hashlib.sha256(uuid4().hex).hexdigest()
-    hash = hashlib.sha256('toto%r' % sel).hexdigest()
-    user3 = User(username = 'third', email = "third@rd.com", hash = hash, sel = sel, role = 0, active = 1)
+    hash1 = hashlib.sha256("{}{}".format('toto', sel)).hexdigest()
+
+    user3 = User(username = 'third', email = "third@rd.com", hash = hash1, sel = sel, role = 0, active = 1)
 
 
     

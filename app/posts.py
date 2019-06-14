@@ -7,9 +7,16 @@ from db import db
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
+@UsersAPI.route("/", methods=["GET"])
+def get_users():
+    return "Accueil posts : go to /list"
+
 @PostAPI.route("/list", methods=["GET"])
 def get_postslist():
-	return render_template('postslist.jinja', posts = Post.query.all())
+	if request.is_json :
+        return jsonify(json_list = Post.query.with_entities(Post.title, Post.corpus))
+    else:
+		return render_template('postslist.jinja', posts = Post.query.all())
 #def get_postslist():
 #    Liste = Posts.query.all()
 #    for i in Liste:
@@ -46,6 +53,8 @@ def post_create():
 	return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
 
 @PostAPI.route("/<int:post_id>", methods=["DELETE"])
+@require_login
+@require_admin
 def delete_post(post_id):
 	if countPost(post_id) > 0 :
 		print('post exists, delete (active = 0)')
