@@ -1,0 +1,17 @@
+{% extends "main.jinja" %}
+
+{% block content %}
+
+<h1>Options:</h1>
+
+<div class="btn-group">
+<form>
+  <button formaction="list">Userlist</button>
+  <button formaction="login">Login</button>
+  <button formaction="register">Create User</button>
+  <button formaction="reset">Reset Password</button>
+  <button formaction="../">Home</button>
+</form>
+</div>
+
+{% endblock %}

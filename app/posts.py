@@ -9,7 +9,7 @@ PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
 @PostAPI.route("/", methods=["GET"])
 def get_users():
-    return "Accueil posts : go to /list"
+    return render_template("postspage.jinja")
 
 @PostAPI.route("/list", methods=["GET"])
 def get_postslist():

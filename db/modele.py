@@ -52,6 +52,13 @@ class Tag(db.Model):
 class Token(db.Model):
     jwt = db.Column(db.Text, primary_key=True)
     expiration = db.Column(db.DateTime, nullable=False)
-    
+
+
+class ResetToken(db.Model):
+    token = db.Column(db.Text, primary_key=True)
+    expiration = db.Column(db.DateTime, nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
     def __repr__(self):
         return '<Token %r>' % self.jwt
