@@ -24,13 +24,11 @@ Pip :
 Récupérer toutes les dépendance du projet dans le fichier requirements.txt
 ```
 
-```
 
 2. Accéder à l'application
 
 ```
 Avec un terminal de commande, déplacez vous dans le dossier du projet puis executer server.py avec Python 2.7
-```
 ```
 
 ### Auteurs
