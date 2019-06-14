@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, Response, jsonify, redire
 from datetime import datetime
 from decorators.login import require_login
 from decorators.admin import require_admin
-from db.modele import Post
+from db.modele import Post,Tag
 from db import db
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
@@ -42,14 +42,18 @@ def create_post():
 
 @PostAPI.route("/", methods=["POST"])
 def post_create():
-	title = request.get_json()['title']
-	corpus = request.get_json()['corpus']
-	imagelink = request.get_json()['imagelink']
-	isActive = request.get_json()['isActive']
+	json = request.get_json()
+	title = json['title']
+	corpus = json['corpus']
+	imagelink = json['imagelink']
+	tags = json['tags']
+	isActive = json['isActive']
 	print(title+" "+corpus+" "+imagelink)
 	post = Post(titre = title, corpus = corpus, datecree = datetime.now(), datemodif = datetime.now(),creator = 3, Image = imagelink , active = True)
 	db.session.add(post)
 	db.session.commit()
+	db.session.flush()
+	assoc_tags_to_post(extract_tags(tags),Post.id)
 	return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
 
 @PostAPI.route("/<int:post_id>", methods=["DELETE"])
@@ -67,3 +71,18 @@ def delete_post(post_id):
 
 def countPost(post_id):
 	return db.session.query(Token).filter( Post.id == post_id ).count()
+
+def extract_tags(tags):
+	tagList = tags.strip().split(',')
+	for tag in tagList:
+		newTag = Tag(titre=tag)
+		db.session.add(newTag)
+		db.session.commit()
+		db.session.flush()
+		tagids.append(newTag.id)
+		#If the tag exists, get the existant tag id. return the list, make the assoc
+	return tagids
+
+def assoc_tags_to_post(tagsIds, postId):
+	for ids in tagsIds:
+		db.session

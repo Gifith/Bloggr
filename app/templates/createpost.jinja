@@ -8,6 +8,8 @@
         <input id="create-post-input-corpus" type="text"/>
         <label>Image</label>
         <input id="create-post-input-image" type="text"/>
+         <label>Tags, separated with a comma</label>
+        <input id="create-post-input-tags" type="text"/>
         <label>Publish on create ?</label>
         <input id="create-post-input-active" type="checkbox">
         <button id="create-post-submit-button">Create</button>
@@ -25,11 +27,12 @@ $( document ).ready(function() {
         createPost($("#create-post-input-title").val(),
                     $("#create-post-input-corpus").val(),
                     $("#create-post-input-image").val(),
+                    $("#create-post-input-tags").val(),
                     $("#create-post-input-active").val());
     });
 });
 
-function createPost(title, corpus, imagelink, isActive){
+function createPost(title, corpus, imagelink,tags, isActive){
 //alert(window.location.href);
     $.ajax({
         url : 'http://localhost:5000/posts/',
@@ -37,6 +40,7 @@ function createPost(title, corpus, imagelink, isActive){
         data: JSON.stringify({  title:title,
                                 corpus:corpus,
                                 imagelink:imagelink,
+                                tags:tags,
                                 isActive:isActive
         }),
         dataType: "json",
