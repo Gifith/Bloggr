@@ -29,11 +29,22 @@ def get_userform():
 
 @UsersAPI.route("/list", methods=["GET"])
 @require_login
+@require_admin
 def get_userlist():
     if request.is_json :
         return jsonify(json_list = User.query.with_entities(User.email, User.username))
     else:
         return render_template('userslist.jinja', users = User.query.all())
+
+
+@UsersAPI.route("/<int:user_id>", methods=["GET"])
+@require_login
+@require_admin
+def get_user(user_id):
+    if request.is_json :
+        return jsonify(json_list = User.query.filter(User.id == user_id).first().with_entities(User.email, User.username))
+    else:
+        return render_template('users.jinja', user = User.query.get(user_id))
 
 
 @UsersAPI.route("/saving", methods=["POST"])
@@ -60,6 +71,22 @@ def save_user():
     else:
         abort(422)
 
+
+@UserAPI.route("/<int:user_id>", methods=["DELETE"])
+@require_login
+@require_admin
+def delete_user(user_id):
+    if countUser(user_id) > 0 :
+        print('user exists, delete (active = 0)')
+        db.session.update(User).where(User.id==user_id).values(active=False)
+        #db.session.query(User).filter(User.id == user_id ).delete()
+        db.session.commit()
+        return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
+    else:
+        return Response(status=410, mimetype='application/json')
+
+def countUser(user_id):
+    return db.session.query(Token).filter( User.id == user_id ).count()
 
 #1xx Informational
 #100 Continue
