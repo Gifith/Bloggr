@@ -26,6 +26,12 @@ def get_post(post_id):
 
 
 @PostAPI.route("/", methods=["POST"])
+def create_post():
+	title = request.get_json()['title']
+	corpus = request.get_json()['corpus']
+	imagelink = request.get_json()['imagelink']
+	isActive = request.get_json()['isActive']
+	post = Post(id = 3, titre = title, corpus = corpus, datecree = datetime.now(), datemodif = datetime.now(),creator = 3, Image = imagelink , active = isActive)
 #def publish_post():
 
 @PostAPI.route("/<int:post_id>", methods=["DELETE"])
