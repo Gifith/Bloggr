@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from decorators.login import require_login
 from decorators.admin import require_admin
 from db.modele import Post
@@ -6,15 +6,15 @@ from db import db
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
-@UsersAPI.route("/", methods=["GET"])
+@PostAPI.route("/", methods=["GET"])
 def get_users():
     return "Accueil posts : go to /list"
 
 @PostAPI.route("/list", methods=["GET"])
 def get_postslist():
 	if request.is_json :
-        return jsonify(json_list = Post.query.with_entities(Post.title, Post.corpus))
-    else:
+		return jsonify(json_list = Post.query.with_entities(Post.title, Post.corpus))
+	else:
 		return render_template('postslist.jinja', posts = Post.query.all())
 #def get_postslist():
 #    Liste = Posts.query.all()
@@ -25,7 +25,10 @@ def get_postslist():
 
 @PostAPI.route("/<int:post_id>", methods=["GET"])
 def get_post(post_id):
-	return render_template('post.jinja', post = Post.query.get(post_id))
+	if request.is_json :
+		return jsonify(json_list = Post.query.filter(Post.id == post_id).first().with_entities(Post.title, Post.corpus))
+	else:
+		return render_template('post.jinja', post = Post.query.get(post_id))
 #def get_post(post_id):
 #    Post = Posts.query.get(post_id)
 #    print(Post.titre, Post.corpus,Post.datecree, Post.creator)
