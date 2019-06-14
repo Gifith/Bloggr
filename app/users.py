@@ -1,18 +1,19 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, abort, url_for
 from os.path import join, dirname, abspath
 from decorators.login import require_login
 from decorators.admin import require_admin
-from db.modele import User
+from db.modele import User, ResetToken
 from db import db
 import time
 from uuid import uuid4
 import hashlib
+from datetime import datetime
 
 UsersAPI = Blueprint('UsersApi', __name__, url_prefix="/users")
 
 @UsersAPI.route("/", methods=["GET"])
 def get_users():
-    return "Accueil users"
+    return render_template('userspage.jinja')
 
 
 @UsersAPI.route("/register", methods=["GET"])
@@ -72,7 +73,57 @@ def save_user():
         abort(422)
 
 
-@UsersAPI.route("/<int:user_id>", methods=["DELETE"])
+@UsersAPI.route("/reset", methods=['GET','POST'])
+def resetpass():
+    if request.method == "GET":
+        return render_template('resetpass.jinja')
+    elif request.method == "POST":
+        if request.is_json :
+            usern = request.get_json()['username']
+            mail = request.get_json()['email']
+            json = True
+        else:
+            usern = request.form['username']
+            mail = request.form['email']
+            json = False
+
+        info = User.query.filter(User.username == usern, User.email == mail).first()
+
+        if info is None:
+            abort(422)
+        else:
+            uniqueid = hashlib.sha256("{}{}".format(usern, hashlib.sha256(uuid4().hex).hexdigest())).hexdigest()
+            exp = datetime.now()
+            token = ResetToken(token = uniqueid, expiration = exp, user = usern)
+            db.session.add(token)
+            db.session.commit()
+            return render_template('resetconfirm.jinja', token = uniqueid)
+
+
+#@UsersAPI.route("/falsemail", methods=['POST'])
+#def resetmail():
+            
+
+@UsersAPI.route("/passreset/<string:token>", methods=["GET","POST"])
+def token_password(token):
+
+    check = ResetToken.query.filter(ResetToken.token == token).first()
+    if check is None:
+        abort(404)
+    else:
+        if request.method == "GET":
+            return render_template('newpass.jinja')
+        if request.method == "POST":
+
+            u = User.query.filter_by(username=check.user).first()
+            u.hash = hashlib.sha256("{}{}".format(request.form['pass'], u.sel)).hexdigest()
+            db.session.commit()
+            return redirect(url_for('UsersApi.get_userform'))
+
+
+
+
+@UserAPI.route("/<int:user_id>", methods=["DELETE"])
 @require_login
 @require_admin
 def delete_user(user_id):

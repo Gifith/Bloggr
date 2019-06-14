@@ -11,3 +11,15 @@ def remove_old_tokens():
 
     if suppr == True:
         db.session.commit() 
+
+
+def remove_old_reset_tokens():
+    suppr = False    
+
+    for tok in ResetToken.query.all():
+        if datetime.now() > tok.expiration:
+            db.session.delete(tok)
+            suppr = True
+
+    if suppr == True:
+        db.session.commit()
