@@ -7,7 +7,7 @@ from db import db
 
 PostAPI = Blueprint('PostApi', __name__, url_prefix="/posts")
 
-@UsersAPI.route("/", methods=["GET"])
+@PostAPI.route("/", methods=["GET"])
 def get_users():
     return "Accueil posts : go to /list"
 
