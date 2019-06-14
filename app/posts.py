@@ -14,8 +14,8 @@ def get_users():
 @PostAPI.route("/list", methods=["GET"])
 def get_postslist():
 	if request.is_json :
-        return jsonify(json_list = Post.query.with_entities(Post.title, Post.corpus))
-    else:
+		return jsonify(json_list = Post.query.with_entities(Post.title, Post.corpus))
+	else:
 		return render_template('postslist.jinja', posts = Post.query.all())
 #def get_postslist():
 #    Liste = Posts.query.all()
