@@ -30,7 +30,7 @@ $( document ).ready(function() {
 
 function login(u,pw){
     $.ajax({
-        url : 'http://localhost:5000/tokens/',
+        url : '/tokens/',
         type : 'POST',
         data: JSON.stringify({username:u,password:pw}),
         dataType: "json",
