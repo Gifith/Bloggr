@@ -39,9 +39,6 @@ def create_post():
 
 @PostAPI.route("/", methods=["POST"])
 def post_create():
-	print("---------------")
-	print(request.get_json())
-	print("---------------")
 	title = request.get_json()['title']
 	corpus = request.get_json()['corpus']
 	imagelink = request.get_json()['imagelink']
