@@ -32,7 +32,7 @@ Récupérer toutes les dépendance du projet dans le fichier requirements.txt
 Avec un terminal de commande, déplacez vous dans le dossier du projet puis executer server.py avec Python 2.7
 ```
 
-## Auteurs
+### Auteurs
 
 * **Clément T**
 * **Martin M**
