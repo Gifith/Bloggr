@@ -29,6 +29,7 @@ def get_userform():
 
 @UsersAPI.route("/list", methods=["GET"])
 @require_login
+@require_admin
 def get_userlist():
     if request.is_json :
         return jsonify(json_list = User.query.with_entities(User.email, User.username))
