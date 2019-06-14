@@ -39,7 +39,7 @@ class Post(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    titre = db.Column(db.String(50), unique=True, nullable=False)
+    titre = db.Column(db.String(50), nullable=False)
 
 
 class Token(db.Model):
