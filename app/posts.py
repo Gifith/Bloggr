@@ -61,7 +61,7 @@ def post_create():
 def delete_post(post_id):
 	if countPost(post_id) > 0 :
 		print('post exists, delete (active = 0)')
-		db.session.update(Post).where(users.c.id==post_id).values(active=False)
+		db.session.update(Post).where(Post.id==post_id).values(active=False)
 		#db.session.query(Post).filter(Post.id == post_id ).delete()
 		db.session.commit()
 		return Response(redirect((url_for('PostApi.get_postslist'))),status=204, mimetype='application/json')
