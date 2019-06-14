@@ -6,18 +6,10 @@ from .users import UsersAPI
 from .tokens import TokensAPI
 from .posts import PostAPI
 from .app import app
-from db.modele import User, Token, Post
 from decorators.login import require_login
 from decorators.admin import require_admin
-import hashlib
-from uuid import uuid4
-
-from db import db
 
 from db.initdb import initialize
-
-from datetime import date, datetime
-
 from db.antitoken import remove_old_tokens
 
 
