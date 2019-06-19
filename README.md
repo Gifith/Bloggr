@@ -31,7 +31,7 @@ All pip's dependances are located in requirements.txt
 Using a console, move to the project folder then execute server.py with Python 2 >= 2.7
 ```
 
-##### Sessions
+## Sessions
 
 ### Init session
 * **URL:** /tokens
@@ -53,7 +53,7 @@ Authorization : given valid webtoken
 204 (no content) 
 410 (Gone)
 
-##### Posts
+## Posts
 
 ### List posts
 * **URL:** /posts/list
@@ -85,14 +85,17 @@ payload: TODO
 Content-type: application/json \n
 Authorization : given valid webtoken
 * **body** *:
-title = string
-corpus = string
-imagelink = string
-tags = string : tags separated with commas
-isActive = boolean
+```
+{
+    "title" : "A fancy title",
+    "corpus" : "Some Lorem Ipsum",
+    "imageLink" : "some direct link to an hosted image",
+    "tags" : "Il,est,grand,temps,de,rallumer,les,etoiles",
+    "isActive" : True
+}
+```
 * **Returns:** 
 200 (ok) 
-payload: TODO
 
 ### Delete a post
 * **URL:** /posts/:id
