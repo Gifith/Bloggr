@@ -31,7 +31,25 @@ All pip's dependances are located in requirements.txt
 Using a console, move to the project folder then execute server.py with Python 2 >= 2.7
 ```
 
-### Session API
+### Ïnit session
+* **URL:** /tokens
+* **Description:** Request a session token to uses other api endpoints.
+* **Method:** POST
+* **Parameters:** Content-type: application/json
+* **Returns:** 
+200 (OK) with token as payload
+401(UNAUTHORIZED)
+
+### Kill session
+* **URL:** /tokens
+* **Description:** Destroys a session identified by a session token.
+* **Method:** DELETE
+* **Parameters:** 
+Content-type: application/json
+Authorization : given valid webtoken
+* **Returns:** 
+204 (no content) 
+410 (Gone)
 
 #### GET /users/login
 
