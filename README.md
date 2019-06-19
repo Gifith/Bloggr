@@ -30,7 +30,8 @@ All pip's dependances are located in requirements.txt
 ```
 Using a console, move to the project folder then execute server.py with Python 2 >= 2.7
 ```
-####Sessions
+
+##### Sessions
 
 ### Init session
 * **URL:** /tokens
@@ -52,9 +53,9 @@ Authorization : given valid webtoken
 204 (no content) 
 410 (Gone)
 
-####Posts
+##### Posts
 
-###List posts
+### List posts
 * **URL:** /posts/list
 * **Description:** Return the list of existing posts.
 * **Method:** GET
@@ -65,7 +66,7 @@ Authorization : given valid webtoken
 200 (ok)
 payload: TODO
 
-###Get a post
+### Get a post
 * **URL:** /posts/:id
 * **Description:** Return the post datas identified by the given id 
 * **Method:** GET
@@ -76,7 +77,7 @@ Authorization : given valid webtoken
 200 (ok) 
 payload: TODO
 
-###Create a post
+### Create a post
 * **URL:** /posts/
 * **Description:** Create a post with the datas sent as payload
 * **Method:** POST
@@ -93,7 +94,7 @@ isActive = boolean
 200 (ok) 
 payload: TODO
 
-###Delete a post
+### Delete a post
 * **URL:** /posts/:id
 * **Description:** Delete the post identified by the given id
 * **Method:** DELETE
