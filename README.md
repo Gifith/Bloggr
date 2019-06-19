@@ -30,12 +30,13 @@ All pip's dependances are located in requirements.txt
 ```
 Using a console, move to the project folder then execute server.py with Python 2 >= 2.7
 ```
+####Sessions
 
-### Ïnit session
+### Init session
 * **URL:** /tokens
 * **Description:** Request a session token to uses other api endpoints.
 * **Method:** POST
-* **Parameters:** Content-type: application/json
+* **headers:** Content-type: application/json
 * **Returns:** 
 200 (OK) with token as payload
 401(UNAUTHORIZED)
@@ -44,12 +45,66 @@ Using a console, move to the project folder then execute server.py with Python 2
 * **URL:** /tokens
 * **Description:** Destroys a session identified by a session token.
 * **Method:** DELETE
-* **Parameters:** 
-Content-type: application/json
+* **headers:** 
+Content-type: application/json \n
 Authorization : given valid webtoken
 * **Returns:** 
 204 (no content) 
 410 (Gone)
+
+####Posts
+
+###List posts
+* **URL:** /posts/list
+* **Description:** Return the list of existing posts.
+* **Method:** GET
+* **headers:** 
+Content-type: application/json \n
+Authorization : given valid webtoken
+* **Returns:** 
+200 (ok)
+payload: TODO
+
+###Get a post
+* **URL:** /posts/:id
+* **Description:** Return the post datas identified by the given id 
+* **Method:** GET
+* **headers:** 
+Content-type: application/json \n
+Authorization : given valid webtoken
+* **Returns:** 
+200 (ok) 
+payload: TODO
+
+###Create a post
+* **URL:** /posts/
+* **Description:** Create a post with the datas sent as payload
+* **Method:** POST
+* **headers:** 
+Content-type: application/json \n
+Authorization : given valid webtoken
+* **body** *:
+title = string
+corpus = string
+imagelink = string
+tags = string : tags separated with commas
+isActive = boolean
+* **Returns:** 
+200 (ok) 
+payload: TODO
+
+###Delete a post
+* **URL:** /posts/:id
+* **Description:** Delete the post identified by the given id
+* **Method:** DELETE
+* **headers:** 
+Content-type: application/json \n
+Authorization : given valid webtoken
+* **Returns:** 
+204 (no content)
+410 (gone)
+payload: TODO
+
 
 #### GET /users/login
 
